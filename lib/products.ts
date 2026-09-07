@@ -1,7 +1,7 @@
 export type Product = {
   id: string;
   name: string;
-  category: 'Seating' | 'Storage' | 'Tables';
+  category: 'Seating' | 'Storage' | 'Tables' | 'Beds';
   price: number;
   material: string;
   color: string;
@@ -19,6 +19,8 @@ export type Product = {
 const chair = '/images/sumi-chair.png';
 const storage = '/images/nara-sideboard.png';
 const room = '/images/kanso-hero.png';
+const diningTable = '/images/ma-dining-table.png';
+const bed = '/images/tsuki-platform-bed.png';
 
 export const products: Product[] = [
   {
@@ -217,7 +219,7 @@ export const products: Product[] = [
     price: 3890,
     material: 'White Oak',
     color: 'Natural',
-    image: room,
+    image: diningTable,
     rating: 4.9,
     reviews: 34,
     stock: true,
@@ -225,6 +227,24 @@ export const products: Product[] = [
       'Ma leaves room for conversation with a slender top and reassuring solid-oak frame.',
     dimensions: 'W 200 × D 92 × H 74 cm',
     care: 'Use placemats under tableware. Wipe spills immediately and dry thoroughly.',
+    colors: ['Natural', 'Sumi'],
+  },
+  {
+    id: 'tsuki-platform-bed',
+    name: 'Tsuki Platform Bed',
+    category: 'Beds',
+    price: 3590,
+    material: 'White Oak',
+    color: 'Natural',
+    image: bed,
+    badge: 'New',
+    rating: 4.9,
+    reviews: 21,
+    stock: true,
+    description:
+      'A low, grounded bed with softened oak edges and a quiet headboard, designed to make rest feel spacious.',
+    dimensions: 'W 190 × D 218 × H 76 cm · Queen mattress',
+    care: 'Dust timber with a soft dry cloth. Air linen regularly and avoid placing the frame in direct sunlight.',
     colors: ['Natural', 'Sumi'],
   },
 ];

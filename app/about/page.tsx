@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer';
 export const metadata = { title: 'Our Story' };
 export default function About() {
   return (
-    <main>
+    <main className="page-enter">
       <SiteHeader />
       <section className="mx-auto max-w-[1440px] px-5 py-16 lg:px-10 lg:py-24">
         <p className="text-xs tracking-[.22em] text-indigo uppercase">Our story</p>
@@ -13,7 +13,7 @@ export default function About() {
           We make space for what matters.
         </h1>
       </section>
-      <section className="mx-auto grid max-w-[1440px] gap-10 px-5 pb-24 lg:grid-cols-2 lg:px-10">
+      <section className="section-reveal mx-auto grid max-w-[1440px] gap-10 px-5 pb-24 lg:grid-cols-2 lg:px-10">
         <div className="overflow-hidden">
           <img
             src="/images/kanso-hero.png"
@@ -48,7 +48,7 @@ export default function About() {
           </div>
         </div>
       </section>
-      <section className="bg-indigo text-paper">
+      <section className="section-reveal bg-indigo text-paper">
         <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-20 sm:grid-cols-3 lg:px-10 lg:py-28">
           {[
             [

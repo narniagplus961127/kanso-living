@@ -2,9 +2,8 @@ import Link from 'next/link';
 import { ArrowRight, Leaf, PackageCheck, Ruler } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
-import { ProductCard } from '@/components/product-card';
-import { products } from '@/lib/products';
 import { RecentProducts } from '@/components/recent-products';
+import { FeaturedProductsCarousel } from '@/components/featured-products-carousel';
 
 const principles = [
   {
@@ -26,17 +25,17 @@ const principles = [
 
 export default function Home() {
   return (
-    <main>
+    <main className="page-enter">
       <SiteHeader />
       <section className="relative min-h-[calc(100svh-112px)] overflow-hidden bg-stone">
         <img
           src="/images/kanso-hero.png"
           alt="A calm Japanese-inspired living room with an oak sofa and coffee table"
-          className="absolute inset-0 h-full w-full object-cover object-[63%_center]"
+          className="motion-hero-image absolute inset-0 h-full w-full object-cover object-[63%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-paper/95 via-paper/55 to-transparent" />
         <div className="relative mx-auto flex min-h-[calc(100svh-112px)] max-w-[1440px] items-center px-5 py-20 lg:px-10">
-          <div className="max-w-xl">
+          <div className="motion-hero-copy max-w-xl">
             <p className="mb-6 text-xs font-medium tracking-[.24em] text-indigo uppercase">
               The quiet collection — 2026
             </p>
@@ -58,7 +57,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-[1440px] px-5 py-20 lg:px-10 lg:py-28">
+      <section className="section-reveal mx-auto max-w-[1440px] px-5 py-20 lg:px-10 lg:py-28">
         <div className="mb-12 flex items-end justify-between">
           <div>
             <p className="text-xs tracking-[.2em] text-indigo uppercase">Pieces with presence</p>
@@ -68,13 +67,9 @@ export default function Home() {
             View all <ArrowRight size={16} />
           </Link>
         </div>
-        <div className="grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-          {products.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <FeaturedProductsCarousel />
       </section>
-      <section className="bg-indigo text-paper">
+      <section className="section-reveal bg-indigo text-paper">
         <div className="mx-auto grid max-w-[1440px] lg:grid-cols-2">
           <div className="min-h-[520px] overflow-hidden">
             <img
@@ -103,7 +98,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="mx-auto grid max-w-[1440px] gap-8 px-5 py-16 sm:grid-cols-3 lg:px-10 lg:py-20">
+      <section className="section-reveal mx-auto grid max-w-[1440px] gap-8 px-5 py-16 sm:grid-cols-3 lg:px-10 lg:py-20">
         {principles.map(({ Icon, title, copy }) => (
           <div key={title} className="border-t border-ink/20 pt-6">
             <Icon size={24} strokeWidth={1.2} />

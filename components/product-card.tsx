@@ -1,13 +1,16 @@
 'use client';
 import Link from 'next/link';
-import { Heart, Plus } from 'lucide-react';
+import { Heart, LoaderCircle, Plus } from 'lucide-react';
 import { Product, formatPrice } from '@/lib/products';
 import { useStore } from '@/components/store-provider';
+import { useDelayedAction } from '@/components/use-delayed-action';
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart, toggleWishlist, wishlist } = useStore();
+  const wishlistAction = useDelayedAction();
+  const cartAction = useDelayedAction();
   const saved = wishlist.includes(product.id);
   return (
-    <article className="group">
+    <article className="group motion-card-in">
       <div className="relative aspect-[4/5] overflow-hidden bg-[#e8e1d6]">
         <Link href={`/products/${product.id}`}>
           <img
@@ -23,19 +26,30 @@ export function ProductCard({ product }: { product: Product }) {
           </span>
         )}
         <button
-          onClick={() => toggleWishlist(product.id)}
+          onClick={() => wishlistAction.run(() => toggleWishlist(product.id))}
+          disabled={wishlistAction.pending}
+          aria-busy={wishlistAction.pending}
           aria-label={saved ? `Remove ${product.name} from wishlist` : `Save ${product.name}`}
-          className="absolute top-3 right-3 grid size-10 place-items-center bg-paper/90"
+          className="absolute top-3 right-3 grid size-10 place-items-center bg-paper/90 transition hover:bg-paper disabled:cursor-wait"
         >
-          <Heart size={18} strokeWidth={1.4} fill={saved ? 'currentColor' : 'none'} />
+          {wishlistAction.pending ? (
+            <LoaderCircle className="animate-spin" size={18} aria-hidden="true" />
+          ) : (
+            <Heart size={18} strokeWidth={1.4} fill={saved ? 'currentColor' : 'none'} />
+          )}
         </button>
         <button
-          disabled={!product.stock}
-          onClick={() => addToCart(product.id)}
-          className="absolute right-0 bottom-0 flex items-center gap-2 bg-indigo px-4 py-3 text-xs text-white transition hover:bg-ink disabled:bg-ink/40"
+          disabled={!product.stock || cartAction.pending}
+          aria-busy={cartAction.pending}
+          onClick={() => cartAction.run(() => addToCart(product.id))}
+          className="absolute right-0 bottom-0 flex min-w-20 items-center justify-center gap-2 bg-indigo px-4 py-3 text-xs text-white transition hover:bg-ink disabled:cursor-wait disabled:bg-ink/40"
         >
-          <Plus size={15} />
-          {product.stock ? 'Add' : 'Unavailable'}
+          {cartAction.pending ? (
+            <LoaderCircle className="animate-spin" size={15} aria-hidden="true" />
+          ) : (
+            <Plus size={15} aria-hidden="true" />
+          )}
+          {cartAction.pending ? 'Adding' : product.stock ? 'Add' : 'Unavailable'}
         </button>
       </div>
       <Link href={`/products/${product.id}`} className="mt-4 block">

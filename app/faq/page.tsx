@@ -59,7 +59,7 @@ const groups = [
 ];
 export default function FAQ() {
   return (
-    <main>
+    <main className="page-enter">
       <SiteHeader />
       <section className="mx-auto max-w-[1440px] px-5 py-16 lg:px-10 lg:py-24">
         <p className="text-xs tracking-[.22em] text-indigo uppercase">Care & questions</p>
@@ -80,7 +80,7 @@ export default function FAQ() {
           </div>
           <div>
             {groups.map((group) => (
-              <section key={group.title} className="mb-12">
+              <section key={group.title} className="section-reveal mb-12">
                 <h2 className="mb-3 text-xs font-semibold tracking-[.18em] text-indigo uppercase">
                   {group.title}
                 </h2>
@@ -101,7 +101,7 @@ export default function FAQ() {
           </div>
         </div>
       </section>
-      <section className="bg-[#e7dfd2] px-5 py-16 text-center">
+      <section className="section-reveal bg-[#e7dfd2] px-5 py-16 text-center">
         <p className="font-serif text-4xl">Still wondering?</p>
         <p className="mt-3 text-sm text-ink/55">
           Our studio replies Monday to Friday, usually within one working day.
