@@ -20,6 +20,7 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - `components/` contains shared storefront and installed UI primitives.
 - `lib/products.ts` is the typed mock catalogue and price-formatting source.
 - `public/images/` contains the project-owned furniture imagery.
+- `vercel.json` selects the native Next.js framework output and clears legacy output-directory overrides.
 - Vercel builds and deploys the application automatically from the connected GitHub repository.
 
 ## Working conventions

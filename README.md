@@ -60,6 +60,7 @@ public/images/        Furniture imagery
 .github/CODEOWNERS    Required owner review for all files
 AGENTS.md             Contribution guidance for coding agents
 postcss.config.mjs    Tailwind CSS processing for Next.js
+vercel.json           Native Next.js deployment configuration
 ```
 
 ## Commerce scope
