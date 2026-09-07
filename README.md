@@ -2,7 +2,7 @@
 
 A responsive, frontend-only furniture storefront inspired by Japanese minimalism. Kanso Living pairs quiet editorial layouts with a fully interactive mock shopping experience.
 
-**Live site:** [kanso-living.narnia-gplus.chatgpt.site](https://kanso-living.narnia-gplus.chatgpt.site)
+**Production site:** [kanso-living.vercel.app](https://kanso-living.vercel.app)
 
 ## Features
 
@@ -19,7 +19,7 @@ A responsive, frontend-only furniture storefront inspired by Japanese minimalism
 - React 19
 - TypeScript
 - Tailwind CSS 4
-- Vinext with the Next.js App Router API
+- Next.js 16 with the App Router
 - Base UI and shadcn components
 - Lucide icons
 - Prettier with Tailwind class sorting
@@ -59,6 +59,7 @@ lib/products.ts       Typed mock product catalogue
 public/images/        Furniture imagery
 .github/CODEOWNERS    Required owner review for all files
 AGENTS.md             Contribution guidance for coding agents
+postcss.config.mjs    Tailwind CSS processing for Next.js
 ```
 
 ## Commerce scope
@@ -68,3 +69,5 @@ This repository demonstrates the customer-facing frontend. Checkout, authenticat
 ## Repository workflow
 
 The `main` branch is protected. Work must be proposed through a pull request and requires approval from the repository owner and code owner, `@narniagplus961127`, before merging.
+
+Use `feat/<short-name>` branches for new functionality and `bug/<short-name>` branches for bug fixes. Vercel creates preview deployments for pull requests and deploys production from `main` after an approved merge.
