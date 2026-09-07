@@ -1,0 +1,3 @@
+'use client';
+import { useStore } from '@/components/store-provider'; import { products } from '@/lib/products'; import { ProductCard } from '@/components/product-card';
+export function RecentProducts(){const {recentViewed}=useStore();const recent=recentViewed.map(id=>products.find(p=>p.id===id)).filter(Boolean).slice(0,4);if(!recent.length)return null;return <section className="border-t border-ink/15"><div className="mx-auto max-w-[1440px] px-5 py-20 lg:px-10"><p className="text-xs uppercase tracking-[.2em] text-indigo">Your trail</p><h2 className="mt-3 font-serif text-4xl">Recently viewed</h2><div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{recent.map(product=><ProductCard key={product!.id} product={product!}/>)}</div></div></section>}
