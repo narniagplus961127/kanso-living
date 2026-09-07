@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ChevronLeft, Heart, Minus, Plus, Star } from 'lucide-react';
+import { ChevronLeft, Heart, LoaderCircle, Minus, Plus, Star } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { ProductCard } from '@/components/product-card';
@@ -14,19 +14,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { useDelayedAction } from '@/components/use-delayed-action';
 export default function ProductPage() {
   const params = useParams<{ id: string }>();
   const product = getProduct(params.id);
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState(product?.colors[0] || '');
   const { addToCart, toggleWishlist, wishlist, addRecent } = useStore();
+  const wishlistAction = useDelayedAction();
+  const cartAction = useDelayedAction();
   const productId = product?.id;
   useEffect(() => {
     if (productId) addRecent(productId);
   }, [addRecent, productId]);
   if (!product)
     return (
-      <main>
+      <main className="page-enter">
         <SiteHeader />
         <div className="grid min-h-[60vh] place-content-center text-center">
           <p className="font-serif text-5xl">Piece not found.</p>
@@ -41,14 +44,14 @@ export default function ProductPage() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
   return (
-    <main>
+    <main className="page-enter">
       <SiteHeader />
       <div className="mx-auto max-w-[1440px] px-5 py-6 lg:px-10">
         <Link href="/products" className="inline-flex items-center gap-2 text-xs text-ink/55">
           <ChevronLeft size={14} /> Back to collection
         </Link>
       </div>
-      <section className="mx-auto grid max-w-[1440px] gap-10 px-5 pb-20 lg:grid-cols-[1.15fr_.85fr] lg:px-10">
+      <section className="section-reveal mx-auto grid max-w-[1440px] gap-10 px-5 pb-20 lg:grid-cols-[1.15fr_.85fr] lg:px-10">
         <div className="grid gap-3 sm:grid-cols-2">
           <img
             src={product.image}
@@ -73,11 +76,17 @@ export default function ProductPage() {
               <h1 className="mt-2 font-serif text-5xl sm:text-6xl">{product.name}</h1>
             </div>
             <button
-              onClick={() => toggleWishlist(product.id)}
+              onClick={() => wishlistAction.run(() => toggleWishlist(product.id))}
+              disabled={wishlistAction.pending}
+              aria-busy={wishlistAction.pending}
               aria-label="Save product"
-              className="grid size-11 shrink-0 place-items-center border border-ink/20"
+              className="grid size-11 shrink-0 place-items-center border border-ink/20 transition hover:bg-ink hover:text-paper disabled:cursor-wait"
             >
-              <Heart size={20} fill={wishlist.includes(product.id) ? 'currentColor' : 'none'} />
+              {wishlistAction.pending ? (
+                <LoaderCircle className="animate-spin" size={20} aria-hidden="true" />
+              ) : (
+                <Heart size={20} fill={wishlist.includes(product.id) ? 'currentColor' : 'none'} />
+              )}
             </button>
           </div>
           <div className="mt-5 flex items-center justify-between">
@@ -119,11 +128,19 @@ export default function ProductPage() {
               </button>
             </div>
             <button
-              disabled={!product.stock}
-              onClick={() => addToCart(product.id, quantity)}
-              className="flex-1 bg-indigo px-6 py-4 text-sm text-white disabled:bg-ink/35"
+              disabled={!product.stock || cartAction.pending}
+              aria-busy={cartAction.pending}
+              onClick={() => cartAction.run(() => addToCart(product.id, quantity))}
+              className="flex flex-1 items-center justify-center gap-2 bg-indigo px-6 py-4 text-sm text-white transition hover:bg-ink disabled:cursor-wait disabled:bg-ink/35"
             >
-              {product.stock ? 'Add to bag' : 'Currently unavailable'}
+              {cartAction.pending ? (
+                <LoaderCircle className="animate-spin" size={17} aria-hidden="true" />
+              ) : null}
+              {cartAction.pending
+                ? 'Adding to bag'
+                : product.stock
+                  ? 'Add to bag'
+                  : 'Currently unavailable'}
             </button>
           </div>
           <Accordion className="mt-10 border-t border-ink/20">
@@ -152,7 +169,7 @@ export default function ProductPage() {
           </Accordion>
         </div>
       </section>
-      <section className="border-t border-ink/15">
+      <section className="section-reveal border-t border-ink/15">
         <div className="mx-auto max-w-[1440px] px-5 py-20 lg:px-10">
           <h2 className="font-serif text-4xl">You may also like</h2>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

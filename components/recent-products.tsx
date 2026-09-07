@@ -10,7 +10,7 @@ export function RecentProducts() {
     .slice(0, 4);
   if (!recent.length) return null;
   return (
-    <section className="border-t border-ink/15">
+    <section className="section-reveal border-t border-ink/15">
       <div className="mx-auto max-w-[1440px] px-5 py-20 lg:px-10">
         <p className="text-xs tracking-[.2em] text-indigo uppercase">Your trail</p>
         <h2 className="mt-3 font-serif text-4xl">Recently viewed</h2>

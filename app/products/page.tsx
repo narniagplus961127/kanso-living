@@ -19,7 +19,7 @@ import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { useStore } from '@/components/store-provider';
 import { useSearchParams } from 'next/navigation';
 
-const categories = ['Seating', 'Storage', 'Tables'];
+const categories = ['Seating', 'Storage', 'Tables', 'Beds'];
 const materials = ['White Oak', 'Smoked Oak', 'Ash', 'Walnut'];
 function Filters({
   selected,
@@ -120,7 +120,7 @@ export default function ProductsPage() {
     );
   }, [query, selected, price, sort, savedOnly, wishlist]);
   return (
-    <main>
+    <main className="page-enter">
       <SiteHeader />
       <section className="mx-auto max-w-[1440px] px-5 pt-12 pb-10 lg:px-10 lg:pt-16">
         <p className="text-xs tracking-[.22em] text-indigo uppercase">
@@ -183,7 +183,7 @@ export default function ProductsPage() {
           <NativeSelect
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="w-[138px]"
+            className="ml-auto w-[138px]"
           >
             <NativeSelectOption value="featured">Featured</NativeSelectOption>
             <NativeSelectOption value="new">New arrivals</NativeSelectOption>
