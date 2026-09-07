@@ -3,7 +3,7 @@ import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 export default function NotFound() {
   return (
-    <main className="page-enter">
+    <main>
       <SiteHeader />
       <section className="grid min-h-[60vh] place-content-center px-5 text-center">
         <p className="text-xs tracking-[.2em] text-indigo uppercase">404 · A quiet corner</p>

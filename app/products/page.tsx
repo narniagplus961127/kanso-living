@@ -120,7 +120,7 @@ export default function ProductsPage() {
     );
   }, [query, selected, price, sort, savedOnly, wishlist]);
   return (
-    <main className="page-enter">
+    <main>
       <SiteHeader />
       <section className="mx-auto max-w-[1440px] px-5 pt-12 pb-10 lg:px-10 lg:pt-16">
         <p className="text-xs tracking-[.22em] text-indigo uppercase">

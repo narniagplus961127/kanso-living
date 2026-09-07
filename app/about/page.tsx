@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer';
 export const metadata = { title: 'Our Story' };
 export default function About() {
   return (
-    <main className="page-enter">
+    <main>
       <SiteHeader />
       <section className="mx-auto max-w-[1440px] px-5 py-16 lg:px-10 lg:py-24">
         <p className="text-xs tracking-[.22em] text-indigo uppercase">Our story</p>
@@ -18,6 +18,8 @@ export default function About() {
           <img
             src="/images/kanso-hero.png"
             alt="Kanso Living interior"
+            loading="lazy"
+            decoding="async"
             className="aspect-[4/5] h-full w-full object-cover object-right"
           />
         </div>

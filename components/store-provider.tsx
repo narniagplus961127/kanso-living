@@ -204,7 +204,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
                   const product = products.find((p) => p.id === line.id)!;
                   return (
                     <div key={line.id} className="flex gap-4 py-5">
-                      <img src={product.image} alt="" className="size-24 bg-stone object-cover" />
+                      <img
+                        src={product.image}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="size-24 bg-stone object-cover"
+                      />
                       <div className="min-w-0 flex-1">
                         <Link
                           href={`/products/${product.id}`}
