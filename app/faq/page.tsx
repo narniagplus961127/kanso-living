@@ -59,7 +59,7 @@ const groups = [
 ];
 export default function FAQ() {
   return (
-    <main className="page-enter">
+    <main>
       <SiteHeader />
       <section className="mx-auto max-w-[1440px] px-5 py-16 lg:px-10 lg:py-24">
         <p className="text-xs tracking-[.22em] text-indigo uppercase">Care & questions</p>

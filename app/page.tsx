@@ -25,17 +25,17 @@ const principles = [
 
 export default function Home() {
   return (
-    <main className="page-enter">
+    <main>
       <SiteHeader />
       <section className="relative min-h-[calc(100svh-112px)] overflow-hidden bg-stone">
         <img
           src="/images/kanso-hero.png"
           alt="A calm Japanese-inspired living room with an oak sofa and coffee table"
-          className="motion-hero-image absolute inset-0 h-full w-full object-cover object-[63%_center]"
+          className="absolute inset-0 h-full w-full object-cover object-[63%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-paper/95 via-paper/55 to-transparent" />
         <div className="relative mx-auto flex min-h-[calc(100svh-112px)] max-w-[1440px] items-center px-5 py-20 lg:px-10">
-          <div className="motion-hero-copy max-w-xl">
+          <div className="max-w-xl">
             <p className="mb-6 text-xs font-medium tracking-[.24em] text-indigo uppercase">
               The quiet collection — 2026
             </p>

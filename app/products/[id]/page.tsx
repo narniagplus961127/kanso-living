@@ -29,7 +29,7 @@ export default function ProductPage() {
   }, [addRecent, productId]);
   if (!product)
     return (
-      <main className="page-enter">
+      <main>
         <SiteHeader />
         <div className="grid min-h-[60vh] place-content-center text-center">
           <p className="font-serif text-5xl">Piece not found.</p>
@@ -44,14 +44,14 @@ export default function ProductPage() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
   return (
-    <main className="page-enter">
+    <main>
       <SiteHeader />
       <div className="mx-auto max-w-[1440px] px-5 py-6 lg:px-10">
         <Link href="/products" className="inline-flex items-center gap-2 text-xs text-ink/55">
           <ChevronLeft size={14} /> Back to collection
         </Link>
       </div>
-      <section className="section-reveal mx-auto grid max-w-[1440px] gap-10 px-5 pb-20 lg:grid-cols-[1.15fr_.85fr] lg:px-10">
+      <section className="mx-auto grid max-w-[1440px] gap-10 px-5 pb-20 lg:grid-cols-[1.15fr_.85fr] lg:px-10">
         <div className="grid gap-3 sm:grid-cols-2">
           <img
             src={product.image}

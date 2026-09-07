@@ -10,7 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
   const cartAction = useDelayedAction();
   const saved = wishlist.includes(product.id);
   return (
-    <article className="group motion-card-in">
+    <article className="group">
       <div className="relative aspect-[4/5] overflow-hidden bg-[#e8e1d6]">
         <Link href={`/products/${product.id}`}>
           <img
