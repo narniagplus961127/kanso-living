@@ -2,7 +2,7 @@
 
 ## Project overview
 
-Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist visual direction. It uses React 19, TypeScript, Tailwind CSS 4, Vinext, and the Next.js App Router API. Product, cart, wishlist, and recently viewed data are demonstrations; there is no production commerce backend.
+Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist visual direction. It uses React 19, TypeScript, Tailwind CSS 4, and the Next.js App Router. Product, cart, wishlist, and recently viewed data are demonstrations; there is no production commerce backend.
 
 ## Essential commands
 
@@ -20,7 +20,8 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - `components/` contains shared storefront and installed UI primitives.
 - `lib/products.ts` is the typed mock catalogue and price-formatting source.
 - `public/images/` contains the project-owned furniture imagery.
-- `.openai/hosting.json` is deployment metadata and must remain valid.
+- `vercel.json` selects the native Next.js framework output and clears legacy output-directory overrides.
+- Vercel builds and deploys the application automatically from the connected GitHub repository.
 
 ## Working conventions
 
@@ -37,7 +38,11 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 ## Git and reviews
 
 - Never commit directly to `main`.
-- Create a focused branch and open a pull request.
+- Create a focused branch and open a pull request for every change.
+- Use `feat/<short-kebab-case-name>` for a new feature, function, enhancement, or platform migration.
+- Use `bug/<short-kebab-case-name>` for a bug fix.
+- Start the pull request title with the same branch prefix and name, followed by a concise description; for example, `feat/product-search: add collection search`.
+- Do not use other branch prefixes unless the repository owner explicitly approves an exception.
 - All files are owned by `@narniagplus961127` through `.github/CODEOWNERS`.
 - Wait for the required owner approval before merging.
 - Keep commits scoped and do not include generated build output or local environment files.
