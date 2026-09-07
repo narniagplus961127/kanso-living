@@ -9,7 +9,7 @@ function BubbleGroup({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="bubble-group"
-      className={cn('gap-2 flex min-w-0 flex-col', className)}
+      className={cn('flex min-w-0 flex-col gap-2', className)}
       {...props}
     />
   );
@@ -62,11 +62,7 @@ function Bubble({
   );
 }
 
-function BubbleContent({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<'div'>) {
+function BubbleContent({ className, render, ...props }: useRender.ComponentProps<'div'>) {
   return useRender({
     defaultTagName: 'div',
     props: mergeProps<'div'>(

@@ -1,40 +1,315 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { products, formatPrice } from '@/lib/products';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 
 type CartLine = { id: string; quantity: number };
-type Store = { cart: CartLine[]; wishlist: string[]; recentViewed: string[]; cartOpen: boolean; setCartOpen:(open:boolean)=>void; addToCart:(id:string, quantity?:number)=>void; updateQuantity:(id:string, quantity:number)=>void; removeFromCart:(id:string)=>void; toggleWishlist:(id:string)=>void; addRecent:(id:string)=>void };
+type Store = {
+  cart: CartLine[];
+  wishlist: string[];
+  recentViewed: string[];
+  cartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
+  addToCart: (id: string, quantity?: number) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  removeFromCart: (id: string) => void;
+  toggleWishlist: (id: string) => void;
+  addRecent: (id: string) => void;
+};
 const StoreContext = createContext<Store | null>(null);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [cart,setCart] = useState<CartLine[]>([]); const [wishlist,setWishlist] = useState<string[]>([]); const [recentViewed,setRecentViewed] = useState<string[]>([]); const [cartOpen,setCartOpen] = useState(false); const [toast,setToast] = useState(''); const [promo,setPromo]=useState(''); const [discount,setDiscount]=useState(false);
-  useEffect(()=>{ try { setCart(JSON.parse(localStorage.getItem('kanso-cart') || '[]')); setWishlist(JSON.parse(localStorage.getItem('kanso-wishlist') || '[]')); setRecentViewed(JSON.parse(localStorage.getItem('kanso-recent') || '[]')); } catch {} },[]);
-  useEffect(()=>{ localStorage.setItem('kanso-cart',JSON.stringify(cart)); },[cart]);
-  useEffect(()=>{ localStorage.setItem('kanso-wishlist',JSON.stringify(wishlist)); },[wishlist]);
-  useEffect(()=>{ localStorage.setItem('kanso-recent',JSON.stringify(recentViewed)); },[recentViewed]);
-  useEffect(()=>{
-    const modelContext=(document as Document & {modelContext?:{registerTool:(tool:unknown,options?:{signal?:AbortSignal})=>void|Promise<void>}}).modelContext;
-    if(!modelContext?.registerTool)return;
-    const lifecycle=new AbortController();
-    const execute=(input:unknown)=>{const value=input as {items?:Array<{productId:string;quantity?:number}>};if(!Array.isArray(value.items)||!value.items.length)throw new Error('Provide at least one cart item.');for(const item of value.items){if(!products.some(product=>product.id===item.productId))throw new Error(`Unknown product: ${item.productId}`);if(item.quantity!==undefined&&(!Number.isInteger(item.quantity)||item.quantity<1))throw new Error('Quantity must be a positive integer.');}setCart(lines=>{const next=[...lines];for(const item of value.items!){const found=next.find(line=>line.id===item.productId);if(found)found.quantity+=(item.quantity||1);else next.push({id:item.productId,quantity:item.quantity||1});}return next});setCartOpen(true);return {added:value.items.length,status:'bag_opened'};};
-    try{void Promise.resolve(modelContext.registerTool({name:'add_products_to_cart',title:'Add products to bag',description:'Add one or more known Kanso Living product IDs to the shopping bag and open the visible bag.',inputSchema:{type:'object',properties:{items:{type:'array',minItems:1,items:{type:'object',properties:{productId:{type:'string'},quantity:{type:'integer',minimum:1}},required:['productId'],additionalProperties:false}}},required:['items'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute},{signal:lifecycle.signal})).catch(()=>{});}catch{}
-    return()=>lifecycle.abort();
-  },[]);
-  const notify=(message:string)=>{ setToast(message); window.setTimeout(()=>setToast(''),2200); };
-  const value=useMemo<Store>(()=>({cart,wishlist,recentViewed,cartOpen,setCartOpen,addToCart:(id,quantity=1)=>{setCart(lines=>{const found=lines.find(line=>line.id===id);return found?lines.map(line=>line.id===id?{...line,quantity:line.quantity+quantity}:line):[...lines,{id,quantity}]});notify('Added to your bag');setCartOpen(true)},updateQuantity:(id,quantity)=>setCart(lines=>quantity<1?lines.filter(line=>line.id!==id):lines.map(line=>line.id===id?{...line,quantity}:line)),removeFromCart:(id)=>{setCart(lines=>lines.filter(line=>line.id!==id));notify('Removed from your bag')},toggleWishlist:(id)=>setWishlist(items=>{const removing=items.includes(id);notify(removing?'Removed from saved pieces':'Saved for later');return removing?items.filter(item=>item!==id):[...items,id]}),addRecent:(id)=>setRecentViewed(items=>[id,...items.filter(item=>item!==id)].slice(0,4))}),[cart,wishlist,recentViewed,cartOpen]);
-  const total=cart.reduce((sum,line)=>sum+(products.find(p=>p.id===line.id)?.price||0)*line.quantity,0);
-  return <StoreContext.Provider value={value}>{children}
-    <Sheet open={cartOpen} onOpenChange={setCartOpen}><SheetContent className="w-[92vw] border-l-0 bg-paper p-0 sm:max-w-[460px]">
-      <SheetHeader className="border-b border-ink/10 px-6 py-6"><SheetTitle className="font-serif text-3xl font-normal">Your bag</SheetTitle><SheetDescription>{cart.length ? `${cart.reduce((n,l)=>n+l.quantity,0)} piece${cart.reduce((n,l)=>n+l.quantity,0)===1?'':'s'} selected` : 'A little space for something considered.'}</SheetDescription></SheetHeader>
-      <div className="flex-1 overflow-y-auto px-6">{cart.length===0?<div className="grid h-full place-content-center text-center"><ShoppingBag className="mx-auto mb-5 text-ink/30" size={38} strokeWidth={1}/><p className="font-serif text-2xl">Your bag is quiet.</p><Link href="/products" onClick={()=>setCartOpen(false)} className="mt-5 border-b border-ink pb-1 text-sm">Explore the collection</Link></div>:<div className="divide-y divide-ink/10">{cart.map(line=>{const product=products.find(p=>p.id===line.id)!;return <div key={line.id} className="flex gap-4 py-5"><img src={product.image} alt="" className="size-24 bg-stone object-cover"/><div className="min-w-0 flex-1"><Link href={`/products/${product.id}`} onClick={()=>setCartOpen(false)} className="font-serif text-xl">{product.name}</Link><p className="mt-1 text-xs text-ink/55">{product.material} · {product.color}</p><div className="mt-4 flex items-center justify-between"><div className="flex items-center border border-ink/20"><button aria-label="Decrease quantity" onClick={()=>value.updateQuantity(line.id,line.quantity-1)} className="p-2"><Minus size={13}/></button><span className="w-7 text-center text-xs">{line.quantity}</span><button aria-label="Increase quantity" onClick={()=>value.updateQuantity(line.id,line.quantity+1)} className="p-2"><Plus size={13}/></button></div><span className="text-sm">{formatPrice(product.price*line.quantity)}</span></div></div><button aria-label={`Remove ${product.name}`} onClick={()=>value.removeFromCart(line.id)} className="self-start p-1 text-ink/45 hover:text-ink"><Trash2 size={16}/></button></div>})}</div>}</div>
-      {cart.length>0&&<div className="border-t border-ink/10 bg-[#ece6dc] p-6"><form onSubmit={event=>{event.preventDefault();const valid=promo.trim().toUpperCase()==='KANSO10';setDiscount(valid);notify(valid?'KANSO10 applied — 10% off':'That code is not recognised')}} className="mb-5 flex border-b border-ink/25"><label htmlFor="promo" className="sr-only">Promotional code</label><input id="promo" value={promo} onChange={e=>setPromo(e.target.value)} placeholder="Promo code (try KANSO10)" className="min-w-0 flex-1 bg-transparent py-2 text-xs outline-none"/><button className="text-xs uppercase tracking-wider">Apply</button></form>{discount&&<div className="mb-2 flex justify-between text-sm text-indigo"><span>KANSO10</span><span>− {formatPrice(total*.1)}</span></div>}<div className="flex justify-between"><span>Subtotal</span><strong>{formatPrice(discount?total*.9:total)}</strong></div><p className="mt-2 text-xs text-ink/55">Delivery calculated at checkout. Taxes included.</p><button onClick={()=>notify('Checkout is a frontend demonstration')} className="mt-5 w-full bg-indigo px-5 py-4 text-sm font-medium text-white">Continue to checkout</button></div>}
-    </SheetContent></Sheet>
-    <div aria-live="polite" className={`fixed bottom-5 left-1/2 z-[70] -translate-x-1/2 bg-ink px-5 py-3 text-sm text-paper shadow-xl transition-all ${toast?'translate-y-0 opacity-100':'pointer-events-none translate-y-3 opacity-0'}`}>{toast}</div>
-  </StoreContext.Provider>;
+  const [cart, setCart] = useState<CartLine[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [recentViewed, setRecentViewed] = useState<string[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [toast, setToast] = useState('');
+  const [promo, setPromo] = useState('');
+  const [discount, setDiscount] = useState(false);
+  useEffect(() => {
+    try {
+      setCart(JSON.parse(localStorage.getItem('kanso-cart') || '[]'));
+      setWishlist(JSON.parse(localStorage.getItem('kanso-wishlist') || '[]'));
+      setRecentViewed(JSON.parse(localStorage.getItem('kanso-recent') || '[]'));
+    } catch {}
+  }, []);
+  useEffect(() => {
+    localStorage.setItem('kanso-cart', JSON.stringify(cart));
+  }, [cart]);
+  useEffect(() => {
+    localStorage.setItem('kanso-wishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
+  useEffect(() => {
+    localStorage.setItem('kanso-recent', JSON.stringify(recentViewed));
+  }, [recentViewed]);
+  useEffect(() => {
+    const modelContext = (
+      document as Document & {
+        modelContext?: {
+          registerTool: (tool: unknown, options?: { signal?: AbortSignal }) => void | Promise<void>;
+        };
+      }
+    ).modelContext;
+    if (!modelContext?.registerTool) return;
+    const lifecycle = new AbortController();
+    const execute = (input: unknown) => {
+      const value = input as { items?: Array<{ productId: string; quantity?: number }> };
+      if (!Array.isArray(value.items) || !value.items.length)
+        throw new Error('Provide at least one cart item.');
+      for (const item of value.items) {
+        if (!products.some((product) => product.id === item.productId))
+          throw new Error(`Unknown product: ${item.productId}`);
+        if (item.quantity !== undefined && (!Number.isInteger(item.quantity) || item.quantity < 1))
+          throw new Error('Quantity must be a positive integer.');
+      }
+      setCart((lines) => {
+        const next = [...lines];
+        for (const item of value.items!) {
+          const found = next.find((line) => line.id === item.productId);
+          if (found) found.quantity += item.quantity || 1;
+          else next.push({ id: item.productId, quantity: item.quantity || 1 });
+        }
+        return next;
+      });
+      setCartOpen(true);
+      return { added: value.items.length, status: 'bag_opened' };
+    };
+    try {
+      void Promise.resolve(
+        modelContext.registerTool(
+          {
+            name: 'add_products_to_cart',
+            title: 'Add products to bag',
+            description:
+              'Add one or more known Kanso Living product IDs to the shopping bag and open the visible bag.',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                items: {
+                  type: 'array',
+                  minItems: 1,
+                  items: {
+                    type: 'object',
+                    properties: {
+                      productId: { type: 'string' },
+                      quantity: { type: 'integer', minimum: 1 },
+                    },
+                    required: ['productId'],
+                    additionalProperties: false,
+                  },
+                },
+              },
+              required: ['items'],
+              additionalProperties: false,
+            },
+            annotations: { readOnlyHint: false, untrustedContentHint: false },
+            execute,
+          },
+          { signal: lifecycle.signal },
+        ),
+      ).catch(() => {});
+    } catch {}
+    return () => lifecycle.abort();
+  }, []);
+  const notify = (message: string) => {
+    setToast(message);
+    window.setTimeout(() => setToast(''), 2200);
+  };
+  const addRecent = useCallback(
+    (id: string) =>
+      setRecentViewed((items) => [id, ...items.filter((item) => item !== id)].slice(0, 4)),
+    [],
+  );
+  const value = useMemo<Store>(
+    () => ({
+      cart,
+      wishlist,
+      recentViewed,
+      cartOpen,
+      setCartOpen,
+      addToCart: (id, quantity = 1) => {
+        setCart((lines) => {
+          const found = lines.find((line) => line.id === id);
+          return found
+            ? lines.map((line) =>
+                line.id === id ? { ...line, quantity: line.quantity + quantity } : line,
+              )
+            : [...lines, { id, quantity }];
+        });
+        notify('Added to your bag');
+        setCartOpen(true);
+      },
+      updateQuantity: (id, quantity) =>
+        setCart((lines) =>
+          quantity < 1
+            ? lines.filter((line) => line.id !== id)
+            : lines.map((line) => (line.id === id ? { ...line, quantity } : line)),
+        ),
+      removeFromCart: (id) => {
+        setCart((lines) => lines.filter((line) => line.id !== id));
+        notify('Removed from your bag');
+      },
+      toggleWishlist: (id) =>
+        setWishlist((items) => {
+          const removing = items.includes(id);
+          notify(removing ? 'Removed from saved pieces' : 'Saved for later');
+          return removing ? items.filter((item) => item !== id) : [...items, id];
+        }),
+      addRecent,
+    }),
+    [addRecent, cart, wishlist, recentViewed, cartOpen],
+  );
+  const total = cart.reduce(
+    (sum, line) => sum + (products.find((p) => p.id === line.id)?.price || 0) * line.quantity,
+    0,
+  );
+  return (
+    <StoreContext.Provider value={value}>
+      {children}
+      <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+        <SheetContent className="w-[92vw] border-l-0 bg-paper p-0 sm:max-w-[460px]">
+          <SheetHeader className="border-b border-ink/10 px-6 py-6">
+            <SheetTitle className="font-serif text-3xl font-normal">Your bag</SheetTitle>
+            <SheetDescription>
+              {cart.length
+                ? `${cart.reduce((n, l) => n + l.quantity, 0)} piece${cart.reduce((n, l) => n + l.quantity, 0) === 1 ? '' : 's'} selected`
+                : 'A little space for something considered.'}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6">
+            {cart.length === 0 ? (
+              <div className="grid h-full place-content-center text-center">
+                <ShoppingBag className="mx-auto mb-5 text-ink/30" size={38} strokeWidth={1} />
+                <p className="font-serif text-2xl">Your bag is quiet.</p>
+                <Link
+                  href="/products"
+                  onClick={() => setCartOpen(false)}
+                  className="mt-5 border-b border-ink pb-1 text-sm"
+                >
+                  Explore the collection
+                </Link>
+              </div>
+            ) : (
+              <div className="divide-y divide-ink/10">
+                {cart.map((line) => {
+                  const product = products.find((p) => p.id === line.id)!;
+                  return (
+                    <div key={line.id} className="flex gap-4 py-5">
+                      <img src={product.image} alt="" className="size-24 bg-stone object-cover" />
+                      <div className="min-w-0 flex-1">
+                        <Link
+                          href={`/products/${product.id}`}
+                          onClick={() => setCartOpen(false)}
+                          className="font-serif text-xl"
+                        >
+                          {product.name}
+                        </Link>
+                        <p className="mt-1 text-xs text-ink/55">
+                          {product.material} · {product.color}
+                        </p>
+                        <div className="mt-4 flex items-center justify-between">
+                          <div className="flex items-center border border-ink/20">
+                            <button
+                              aria-label="Decrease quantity"
+                              onClick={() => value.updateQuantity(line.id, line.quantity - 1)}
+                              className="p-2"
+                            >
+                              <Minus size={13} />
+                            </button>
+                            <span className="w-7 text-center text-xs">{line.quantity}</span>
+                            <button
+                              aria-label="Increase quantity"
+                              onClick={() => value.updateQuantity(line.id, line.quantity + 1)}
+                              className="p-2"
+                            >
+                              <Plus size={13} />
+                            </button>
+                          </div>
+                          <span className="text-sm">
+                            {formatPrice(product.price * line.quantity)}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        aria-label={`Remove ${product.name}`}
+                        onClick={() => value.removeFromCart(line.id)}
+                        className="self-start p-1 text-ink/45 hover:text-ink"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          {cart.length > 0 && (
+            <div className="border-t border-ink/10 bg-[#ece6dc] p-6">
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const valid = promo.trim().toUpperCase() === 'KANSO10';
+                  setDiscount(valid);
+                  notify(valid ? 'KANSO10 applied — 10% off' : 'That code is not recognised');
+                }}
+                className="mb-5 flex border-b border-ink/25"
+              >
+                <label htmlFor="promo" className="sr-only">
+                  Promotional code
+                </label>
+                <input
+                  id="promo"
+                  value={promo}
+                  onChange={(e) => setPromo(e.target.value)}
+                  placeholder="Promo code (try KANSO10)"
+                  className="min-w-0 flex-1 bg-transparent py-2 text-xs outline-none"
+                />
+                <button className="text-xs tracking-wider uppercase">Apply</button>
+              </form>
+              {discount && (
+                <div className="mb-2 flex justify-between text-sm text-indigo">
+                  <span>KANSO10</span>
+                  <span>− {formatPrice(total * 0.1)}</span>
+                </div>
+              )}
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <strong>{formatPrice(discount ? total * 0.9 : total)}</strong>
+              </div>
+              <p className="mt-2 text-xs text-ink/55">
+                Delivery calculated at checkout. Taxes included.
+              </p>
+              <button
+                onClick={() => notify('Checkout is a frontend demonstration')}
+                className="mt-5 w-full bg-indigo px-5 py-4 text-sm font-medium text-white"
+              >
+                Continue to checkout
+              </button>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
+      <div
+        aria-live="polite"
+        className={`fixed bottom-5 left-1/2 z-[70] -translate-x-1/2 bg-ink px-5 py-3 text-sm text-paper shadow-xl transition-all ${toast ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'}`}
+      >
+        {toast}
+      </div>
+    </StoreContext.Provider>
+  );
 }
 
-export function useStore(){const store=useContext(StoreContext);if(!store)throw new Error('useStore must be used within StoreProvider');return store;}
+export function useStore() {
+  const store = useContext(StoreContext);
+  if (!store) throw new Error('useStore must be used within StoreProvider');
+  return store;
+}

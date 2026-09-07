@@ -1,0 +1,43 @@
+# Kanso Living Contributor Guide
+
+## Project overview
+
+Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist visual direction. It uses React 19, TypeScript, Tailwind CSS 4, Vinext, and the Next.js App Router API. Product, cart, wishlist, and recently viewed data are demonstrations; there is no production commerce backend.
+
+## Essential commands
+
+- `npm install` — install dependencies.
+- `npm run dev` — start the local development server.
+- `npm run format` — format supported files with Prettier and sort Tailwind classes.
+- `npm run format:check` — verify formatting without modifying files.
+- `npm run lint` — run ESLint with zero warnings allowed.
+- `npm run build` — create the production build.
+- `npm run check` — run formatting, linting, and the production build.
+
+## Architecture
+
+- `app/` contains routes, global styling, metadata, loading UI, and the 404 page.
+- `components/` contains shared storefront and installed UI primitives.
+- `lib/products.ts` is the typed mock catalogue and price-formatting source.
+- `public/images/` contains the project-owned furniture imagery.
+- `.openai/hosting.json` is deployment metadata and must remain valid.
+
+## Working conventions
+
+- Keep TypeScript strict and avoid weakening types to silence errors.
+- Prefer server components unless browser state, effects, or event handlers are required.
+- Reuse the installed UI primitives for semantic controls such as sheets, accordions, checkboxes, sliders, and skeletons.
+- Preserve the Kanso design tokens in `app/globals.css`; avoid one-off colors when a token fits.
+- Keep visible text specific, concise, and useful to furniture shoppers.
+- Maintain keyboard access, visible focus states, descriptive labels, and useful image alternative text.
+- Keep product data separate from presentation so a future API can replace the mock catalogue.
+- Do not add real checkout, authentication, persistence, or external services without an explicit requirement.
+- Run `npm run format` after edits and `npm run check` before requesting review.
+
+## Git and reviews
+
+- Never commit directly to `main`.
+- Create a focused branch and open a pull request.
+- All files are owned by `@narniagplus961127` through `.github/CODEOWNERS`.
+- Wait for the required owner approval before merging.
+- Keep commits scoped and do not include generated build output or local environment files.

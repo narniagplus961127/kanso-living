@@ -1,9 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import useEmblaCarousel, {
-  type UseEmblaCarouselType,
-} from 'embla-carousel-react';
+import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -110,8 +108,7 @@ function Carousel({
         carouselRef,
         api: api,
         opts,
-        orientation:
-          orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
+        orientation: orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
         scrollPrev,
         scrollNext,
         canScrollPrev,
@@ -136,17 +133,9 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div
-      ref={carouselRef}
-      className="overflow-hidden"
-      data-slot="carousel-content"
-    >
+    <div ref={carouselRef} className="overflow-hidden" data-slot="carousel-content">
       <div
-        className={cn(
-          'flex',
-          orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
-          className,
-        )}
+        className={cn('flex', orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col', className)}
         {...props}
       />
     </div>
@@ -185,7 +174,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        'rounded-full absolute touch-manipulation',
+        'absolute touch-manipulation rounded-full',
         orientation === 'horizontal'
           ? 'inset-y-0 -left-12 my-auto'
           : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
@@ -215,7 +204,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        'rounded-full absolute touch-manipulation',
+        'absolute touch-manipulation rounded-full',
         orientation === 'horizontal'
           ? 'inset-y-0 -right-12 my-auto'
           : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',

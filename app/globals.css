@@ -2,8 +2,93 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @theme inline {
-  --color-background:var(--background);--color-foreground:var(--foreground);--color-paper:#f4f0e8;--color-stone:#d8d0c3;--color-ink:#1f211d;--color-indigo:#273c52;--color-clay:#9a5d42;--font-sans:var(--font-kanso-sans);--font-serif:var(--font-kanso-serif);--color-card:var(--card);--color-card-foreground:var(--card-foreground);--color-popover:var(--popover);--color-popover-foreground:var(--popover-foreground);--color-primary:var(--primary);--color-primary-foreground:var(--primary-foreground);--color-secondary:var(--secondary);--color-secondary-foreground:var(--secondary-foreground);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-accent:var(--accent);--color-accent-foreground:var(--accent-foreground);--color-destructive:var(--destructive);--color-border:var(--border);--color-input:var(--input);--color-ring:var(--ring);--radius-sm:.1rem;--radius-md:.2rem;--radius-lg:.3rem;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-paper: #f4f0e8;
+  --color-stone: #d8d0c3;
+  --color-ink: #1f211d;
+  --color-indigo: #273c52;
+  --color-clay: #9a5d42;
+  --font-sans: var(--font-kanso-sans);
+  --font-serif: var(--font-kanso-serif);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 0.1rem;
+  --radius-md: 0.2rem;
+  --radius-lg: 0.3rem;
 }
-:root {--background:#f4f0e8;--foreground:#1f211d;--card:#f9f7f2;--card-foreground:#1f211d;--popover:#f9f7f2;--popover-foreground:#1f211d;--primary:#273c52;--primary-foreground:#fff;--secondary:#e5dfd4;--secondary-foreground:#1f211d;--muted:#e9e4da;--muted-foreground:#686961;--accent:#ded7ca;--accent-foreground:#1f211d;--destructive:#9f2f2f;--border:#cec6b9;--input:#cec6b9;--ring:#273c52;--radius:.25rem;}
-.dark {--background:#171916;--foreground:#f4f0e8;--card:#20231f;--card-foreground:#f4f0e8;--popover:#20231f;--popover-foreground:#f4f0e8;--primary:#d9e3ec;--primary-foreground:#17202a;--secondary:#2a2d28;--secondary-foreground:#f4f0e8;--muted:#2a2d28;--muted-foreground:#b5b7ae;--accent:#33362f;--accent-foreground:#f4f0e8;--destructive:#d95b5b;--border:#3c4039;--input:#3c4039;--ring:#9bb0c5;}
-@layer base {*{@apply border-border outline-ring/50}html{scroll-behavior:smooth}body{@apply bg-background text-foreground font-sans antialiased;min-width:320px}button,a{@apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo}::selection{background:#273c52;color:#fff}}
+:root {
+  --background: #f4f0e8;
+  --foreground: #1f211d;
+  --card: #f9f7f2;
+  --card-foreground: #1f211d;
+  --popover: #f9f7f2;
+  --popover-foreground: #1f211d;
+  --primary: #273c52;
+  --primary-foreground: #fff;
+  --secondary: #e5dfd4;
+  --secondary-foreground: #1f211d;
+  --muted: #e9e4da;
+  --muted-foreground: #686961;
+  --accent: #ded7ca;
+  --accent-foreground: #1f211d;
+  --destructive: #9f2f2f;
+  --border: #cec6b9;
+  --input: #cec6b9;
+  --ring: #273c52;
+  --radius: 0.25rem;
+}
+.dark {
+  --background: #171916;
+  --foreground: #f4f0e8;
+  --card: #20231f;
+  --card-foreground: #f4f0e8;
+  --popover: #20231f;
+  --popover-foreground: #f4f0e8;
+  --primary: #d9e3ec;
+  --primary-foreground: #17202a;
+  --secondary: #2a2d28;
+  --secondary-foreground: #f4f0e8;
+  --muted: #2a2d28;
+  --muted-foreground: #b5b7ae;
+  --accent: #33362f;
+  --accent-foreground: #f4f0e8;
+  --destructive: #d95b5b;
+  --border: #3c4039;
+  --input: #3c4039;
+  --ring: #9bb0c5;
+}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    min-width: 320px;
+  }
+  button,
+  a {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo;
+  }
+  ::selection {
+    background: #273c52;
+    color: #fff;
+  }
+}
