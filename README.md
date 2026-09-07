@@ -7,12 +7,16 @@ A responsive, frontend-only furniture storefront inspired by Japanese minimalism
 ## Features
 
 - Responsive home, collection, product detail, About, FAQ, loading, and 404 pages
+- Responsive homepage carousel for browsing the expanded seating, storage, table, and bed catalogue
 - Product search, category and material filters, price range, sorting, and incremental loading
 - Persistent shopping bag with quantity controls, removal, subtotal, and demo promo code `KANSO10`
 - Saved products and recently viewed products stored locally in the browser
+- Loading feedback for cart and wishlist interactions
 - Product finishes, availability, related pieces, care guidance, and delivery information
 - Mobile navigation, mobile filter drawer, accessible labels, keyboard focus states, and semantic controls
-- Original project-owned furniture imagery
+- Progressive scroll-reveal effects with reduced-motion support and no initial page-content animation
+- Web Vitals-conscious image loading that prioritizes LCP media and defers offscreen imagery
+- Original project-owned furniture imagery, including dedicated bed and dining-table photography
 
 ## Technology
 
@@ -21,6 +25,7 @@ A responsive, frontend-only furniture storefront inspired by Japanese minimalism
 - Tailwind CSS 4
 - Next.js 16 with the App Router
 - Base UI and shadcn components
+- Embla Carousel
 - Lucide icons
 - Prettier with Tailwind class sorting
 - ESLint with TypeScript and React Hooks rules

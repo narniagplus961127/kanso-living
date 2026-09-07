@@ -35,6 +35,15 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - Do not add real checkout, authentication, persistence, or external services without an explicit requirement.
 - Run `npm run format` after edits and `npm run check` before requesting review.
 
+## Performance and motion
+
+- Render initial page content, hero media, and other likely Largest Contentful Paint elements immediately; do not add page-entry animations that delay or hide them.
+- Limit reveal motion to selected below-the-fold sections as they enter the viewport. Animate only compositor-friendly properties such as `opacity` and `transform`; never animate layout dimensions or positioning.
+- Keep scroll-driven animation progressively enhanced so unsupported browsers render content normally, and always disable non-essential motion for `prefers-reduced-motion`.
+- Lazy-load offscreen images and use asynchronous decoding. Keep genuine LCP images eager with high fetch priority.
+- Preserve stable image containers with explicit dimensions or aspect ratios to avoid layout shift.
+- Reuse the installed Embla carousel primitives for product carousels instead of adding another carousel dependency without a clear requirement.
+
 ## Git and reviews
 
 - Never commit directly to `main`.
