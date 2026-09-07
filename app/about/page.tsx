@@ -18,6 +18,8 @@ export default function About() {
           <img
             src="/images/kanso-hero.png"
             alt="Kanso Living interior"
+            loading="lazy"
+            decoding="async"
             className="aspect-[4/5] h-full w-full object-cover object-right"
           />
         </div>

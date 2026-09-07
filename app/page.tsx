@@ -31,6 +31,8 @@ export default function Home() {
         <img
           src="/images/kanso-hero.png"
           alt="A calm Japanese-inspired living room with an oak sofa and coffee table"
+          loading="eager"
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[63%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-paper/95 via-paper/55 to-transparent" />
@@ -75,6 +77,8 @@ export default function Home() {
             <img
               src="/images/nara-sideboard.png"
               alt="Nara oak sideboard"
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           </div>

@@ -56,16 +56,22 @@ export default function ProductPage() {
           <img
             src={product.image}
             alt={product.name}
+            loading="eager"
+            fetchPriority="high"
             className="aspect-[4/5] h-full w-full bg-stone object-cover sm:col-span-2"
           />
           <img
             src={product.image}
             alt={`${product.name}, alternate view`}
+            loading="lazy"
+            decoding="async"
             className="aspect-square w-full bg-[#e3dbce] object-cover object-left"
           />
           <img
             src={product.image}
             alt={`${product.name}, material detail`}
+            loading="lazy"
+            decoding="async"
             className="aspect-square w-full bg-[#ddd3c4] object-cover object-right"
           />
         </div>
