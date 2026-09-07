@@ -46,7 +46,13 @@ export default defineConfig(async () => {
 
   return {
     css: { postcss: { plugins: [tailwindcss()] } },
-    optimizeDeps: { exclude: ['@base-ui/react', 'lucide-react'] },
+    optimizeDeps: {
+      exclude: ['@base-ui/react', 'lucide-react'],
+      include: [
+        'use-sync-external-store/shim',
+        'use-sync-external-store/shim/with-selector',
+      ],
+    },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
