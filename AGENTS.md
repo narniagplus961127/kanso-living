@@ -44,6 +44,15 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - Preserve stable image containers with explicit dimensions or aspect ratios to avoid layout shift.
 - Reuse the installed Embla carousel primitives for product carousels instead of adding another carousel dependency without a clear requirement.
 
+## SEO
+
+- Use the Next.js Metadata API for titles, descriptions, canonicals, Open Graph data, and social cards; keep shared values and helpers in `lib/seo.ts`.
+- Give every indexable page a unique, descriptive title and description. Client-rendered routes must receive metadata from a parent server layout.
+- Keep product metadata and Product structured data derived from `lib/products.ts` so visible content and crawler data remain consistent.
+- Add indexable catalogue routes to `app/sitemap.ts`, and keep crawler policy centralized in `app/robots.ts`.
+- Preserve the branded `app/opengraph-image.tsx` fallback and use absolute production URLs for structured-data images and offers.
+- Mark missing products as `noindex`, keep user-specific saved-product query URLs out of crawling, and never add misleading structured data for capabilities the site does not provide.
+
 ## Git and reviews
 
 - Never commit directly to `main`.

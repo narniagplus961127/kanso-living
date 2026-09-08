@@ -4,6 +4,14 @@ import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { RecentProducts } from '@/components/recent-products';
 import { FeaturedProductsCarousel } from '@/components/featured-products-carousel';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Japanese-Minimalist Furniture for Quiet Homes',
+  description:
+    'Discover calm, enduring furniture shaped by Japanese restraint and crafted from honest materials for modern Malaysian homes.',
+  path: '/',
+});
 
 const principles = [
   {
