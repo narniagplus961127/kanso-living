@@ -19,6 +19,7 @@ A responsive, frontend-only furniture storefront inspired by Japanese minimalism
 - Original project-owned furniture imagery, including dedicated bed and dining-table photography
 - Unique page and product metadata with canonical URLs, Open Graph cards, and a branded social preview
 - Product and website structured data, statically generated product routes, XML sitemap, and crawler rules
+- Playwright end-to-end coverage for desktop and mobile, with separate local and production targets
 
 ## Technology
 
@@ -47,14 +48,39 @@ Open the local URL printed by the development server.
 
 ## Scripts
 
-| Command                | Purpose                                 |
-| ---------------------- | --------------------------------------- |
-| `npm run dev`          | Start the development server            |
-| `npm run format`       | Format the repository with Prettier     |
-| `npm run format:check` | Check formatting without changing files |
-| `npm run lint`         | Run ESLint with zero warnings allowed   |
-| `npm run build`        | Create a production build               |
-| `npm run check`        | Run formatting, linting, and the build  |
+| Command                       | Purpose                                        |
+| ----------------------------- | ---------------------------------------------- |
+| `npm run dev`                 | Start the development server                   |
+| `npm run format`              | Format the repository with Prettier            |
+| `npm run format:check`        | Check formatting without changing files        |
+| `npm run lint`                | Run ESLint with zero warnings allowed          |
+| `npm run build`               | Create a production build                      |
+| `npm run check`               | Run formatting, linting, and the build         |
+| `npm run test:e2e:local`      | Test the automatically started local app       |
+| `npm run test:e2e:production` | Run safe smoke tests against Vercel production |
+| `npm run test:e2e:ui`         | Open Playwright UI mode for local debugging    |
+
+## End-to-end testing
+
+Install the managed Chromium browser once after installing dependencies:
+
+```bash
+npx playwright install chromium
+```
+
+Run the shared storefront journeys against the local application:
+
+```bash
+npm run test:e2e:local
+```
+
+Run the same safe smoke suite against the deployed Vercel site:
+
+```bash
+npm run test:e2e:production
+```
+
+Failure screenshots, video, traces, and the HTML report are generated locally and ignored by Git.
 
 ## Project structure
 
@@ -64,6 +90,7 @@ components/           Storefront components and UI primitives
 hooks/                Shared React hooks
 lib/products.ts       Typed mock product catalogue
 lib/seo.ts            Shared site identity and metadata helpers
+tests/e2e/             Shared local and production Playwright tests
 public/images/        Furniture imagery
 .github/CODEOWNERS    Required owner review for all files
 AGENTS.md             Contribution guidance for coding agents

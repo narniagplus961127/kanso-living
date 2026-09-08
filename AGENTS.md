@@ -13,11 +13,15 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - `npm run lint` — run ESLint with zero warnings allowed.
 - `npm run build` — create the production build.
 - `npm run check` — run formatting, linting, and the production build.
+- `npm run test:e2e:local` — run Playwright against an automatically started local app.
+- `npm run test:e2e:production` — run the same Playwright suite against the production Vercel site.
+- `npm run test:e2e:ui` — open Playwright UI mode for local debugging.
 
 ## Architecture
 
 - `app/` contains routes, global styling, metadata, loading UI, and the 404 page.
 - `components/` contains shared storefront and installed UI primitives.
+- `tests/e2e/` contains Playwright storefront journeys shared by local and production targets.
 - `lib/products.ts` is the typed mock catalogue and price-formatting source.
 - `public/images/` contains the project-owned furniture imagery.
 - `vercel.json` selects the native Next.js framework output and clears legacy output-directory overrides.
@@ -53,6 +57,14 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - Preserve the branded `app/opengraph-image.tsx` fallback and use absolute production URLs for structured-data images and offers.
 - Mark missing products as `noindex`, keep user-specific saved-product query URLs out of crawling, and never add misleading structured data for capabilities the site does not provide.
 
+## End-to-end testing
+
+- Keep browser journeys in `tests/e2e/` and use accessible roles, labels, placeholders, and visible text instead of implementation-specific selectors.
+- Run the full suite locally for feature validation and keep production checks safe and repeatable; never submit real orders, payments, or external messages from production tests.
+- Keep desktop and mobile Chromium projects enabled in both Playwright configurations.
+- Capture traces on retries and screenshots or video only on failure so routine runs stay lightweight.
+- Do not add generated Playwright reports, traces, screenshots, videos, or browser binaries to Git.
+
 ## Git and reviews
 
 - Never commit directly to `main`.
@@ -64,3 +76,13 @@ Kanso Living is a frontend-only furniture storefront with a Japanese-minimalist 
 - All files are owned by `@narniagplus961127` through `.github/CODEOWNERS`.
 - Wait for the required owner approval before merging.
 - Keep commits scoped and do not include generated build output or local environment files.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
