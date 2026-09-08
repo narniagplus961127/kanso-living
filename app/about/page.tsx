@@ -2,7 +2,14 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
-export const metadata = { title: 'Our Story' };
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Our Story',
+  description:
+    'Meet Kanso Living, a Kuala Lumpur furniture studio guided by Japanese restraint, honest materials, patient craft, and enduring design.',
+  path: '/about',
+});
 export default function About() {
   return (
     <main>

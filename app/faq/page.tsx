@@ -7,7 +7,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-export const metadata = { title: 'Frequently Asked Questions' };
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Furniture Delivery, Returns & Care FAQ',
+  description:
+    'Find answers about Kanso Living delivery across Malaysia, assembly, returns, warranty, responsible timber, and solid-wood furniture care.',
+  path: '/faq',
+});
 const groups = [
   {
     title: 'Ordering & delivery',

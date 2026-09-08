@@ -17,6 +17,8 @@ A responsive, frontend-only furniture storefront inspired by Japanese minimalism
 - Progressive scroll-reveal effects with reduced-motion support and no initial page-content animation
 - Web Vitals-conscious image loading that prioritizes LCP media and defers offscreen imagery
 - Original project-owned furniture imagery, including dedicated bed and dining-table photography
+- Unique page and product metadata with canonical URLs, Open Graph cards, and a branded social preview
+- Product and website structured data, statically generated product routes, XML sitemap, and crawler rules
 
 ## Technology
 
@@ -61,6 +63,7 @@ app/                  Routes, layout, metadata, and global styles
 components/           Storefront components and UI primitives
 hooks/                Shared React hooks
 lib/products.ts       Typed mock product catalogue
+lib/seo.ts            Shared site identity and metadata helpers
 public/images/        Furniture imagery
 .github/CODEOWNERS    Required owner review for all files
 AGENTS.md             Contribution guidance for coding agents
